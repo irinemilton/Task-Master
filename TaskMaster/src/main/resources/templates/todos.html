@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Tasks</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div class="container">
+        <h1>My To-Do List</h1>
+        <form th:action="@{/todos/add}" method="post" style="display:flex; gap:10px; margin-bottom:20px;">
+            <input type="text" name="task" placeholder="Enter a new task..." required/>
+            <button type="submit">Add Task</button>
+        </form>
+        <div th:each="todo : ${todos}" style="display:flex; align-items:center; gap:15px; background:white; padding:15px; border-radius:8px; margin-bottom:10px;">
+            <span th:text="${todo.task}" th:style="${todo.completed} ? 'text-decoration:line-through;' : ''" style="flex-grow:1;"></span>
+            <form th:action="@{/todos/toggle/{id}(id=${todo.id})}" method="post"><button type="submit" th:text="${todo.completed} ? 'Undo' : 'Complete'"></button></form>
+            <form th:action="@{/todos/delete/{id}(id=${todo.id})}" method="post"><button type="submit">Delete</button></form>
+        </div>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
